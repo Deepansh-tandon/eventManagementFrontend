@@ -48,7 +48,6 @@ export const EventLogs = ({ eventId, eventTitle, onClose }: EventLogsProps) => {
 		if (typeof value === 'object') {
 			return JSON.stringify(value, null, 2);
 		}
-		// Check if it's an ISO date string
 		if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}T/)) {
 			return dayjs(value).format('MMM D, YYYY h:mm A');
 		}
@@ -133,6 +132,7 @@ export const EventLogs = ({ eventId, eventTitle, onClose }: EventLogsProps) => {
 		</div>
 	);
 };
+
 
 
 

@@ -49,20 +49,16 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 	const profileDropdownRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		// Check if profile is selected
 		if (!selectedProfile) {
-			console.error('❌ ERROR: No profile selected! Cannot edit event.');
+			console.error('ERROR: No profile selected! Cannot edit event.');
 			setError('Please select a profile from the dropdown at the top before editing.');
 			return;
 		}
-		console.log('✅ Profile selected:', selectedProfile._id, selectedProfile.name);
-		
-		// Use viewTimezone if available, otherwise fall back to event timezone
+		console.log('Profile selected:', selectedProfile._id, selectedProfile.name);
+				
 		const displayTz = viewTimezone || event.createdByTimezone || selectedProfile?.timezone || 'UTC';
 		
-		// Parse the timezone-aware datetime from backend (it has offset)
 		if (event.startLocal) {
-			// startLocal comes with timezone offset, parse it directly
 			const startDayjs = dayjs(event.startLocal);
 			setStartDate(startDayjs.format('YYYY-MM-DD'));
 			setStartTime(startDayjs.format('HH:mm'));
@@ -82,7 +78,6 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 			setEndTime(endDayjs.format('HH:mm'));
 		}
 		
-		// Load assigned profiles
 		loadAssignedProfiles();
 	}, [event, selectedProfile]);
 
@@ -115,7 +110,6 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 		setError(null);
 
 		try {
-			// Validate that we have a selected profile
 			if (!selectedProfile) {
 				setError('Please select a profile before editing an event');
 				setLoading(false);
@@ -144,7 +138,6 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 
 			console.log('🔄 Preparing update with profileId:', selectedProfile._id);
 
-			// Include changed fields
 			if (title !== event.title) {
 				updateData.title = title;
 			}
@@ -152,7 +145,7 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 				updateData.description = description;
 			}
 
-			// Create timezone-naive ISO strings (backend will apply timezone)
+			// Create timezone-naive ISO strings (backend applies timezone)
 			const newStartIso = `${startDate}T${startTime}:00`;
 			const newEndIso = `${endDate}T${endTime}:00`;
 
@@ -167,7 +160,6 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 			updateData.timezone = timezone;
 			updateData.updatedByProfileId = selectedProfile._id;
 
-			// Handle profile assignments
 			const response = await assignmentsApi.getProfilesByEvent(event._id);
 			if (response.data.success && response.data.data) {
 				const currentlyAssigned = response.data.data.map((p: Profile) => p._id);
@@ -182,7 +174,7 @@ export const EditEvent = ({ event, onClose, onSuccess, viewTimezone }: EditEvent
 				}
 			}
 
-			console.log('📤 Sending update data:', updateData);
+			console.log('Sending update data:', updateData);
 
 			await updateEvent(event._id, updateData, viewTimezone);
 			onSuccess();

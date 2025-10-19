@@ -5,7 +5,6 @@ export const ThemeToggle = () => {
 	const { theme, toggleTheme } = useThemeStore();
 
 	useEffect(() => {
-		// Initialize theme on mount
 		document.documentElement.setAttribute('data-theme', theme);
 	}, [theme]);
 

@@ -34,8 +34,6 @@ function App() {
 					</div>
 				</div>
 			</main>
-
-			{/* Create Profile Modal */}
 			{showCreateProfile && (
 				<div className="modal-overlay" onClick={() => setShowCreateProfile(false)}>
 					<div className="modal-content" onClick={(e) => e.stopPropagation()}>

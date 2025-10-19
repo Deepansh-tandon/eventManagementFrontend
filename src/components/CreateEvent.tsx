@@ -76,7 +76,7 @@ export const CreateEvent = () => {
 			return;
 		}
 
-		// Create timezone-naive ISO strings (backend will apply timezone)
+		// Create timezone-naive ISO strings (backend applies timezone)
 		const startLocalIso = `${startDate}T${startTime}:00`;
 		const endLocalIso = `${endDate}T${endTime}:00`;
 
@@ -287,7 +287,6 @@ export const CreateEvent = () => {
 				</button>
 			</form>
 
-			{/* Create Profile Modal */}
 			{showCreateProfile && (
 				<div className="modal-overlay" onClick={() => setShowCreateProfile(false)}>
 					<div className="modal-content" onClick={(e) => e.stopPropagation()}>
